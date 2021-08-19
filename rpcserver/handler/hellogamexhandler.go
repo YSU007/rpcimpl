@@ -2,12 +2,13 @@ package handler
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"rpcimpl/rpcserver/rpcproto"
 )
 
-func HelloGameXHandler(ctx context.Context, in *rpcproto.HelloReq) (*rpcproto.HelloRsp, error) {
-	log.Printf("Received: %v", in.GetName())
-	return &rpcproto.HelloRsp{Message: "Hello " + in.GetName()}, nil
+func HelloGameXHandler(ctx context.Context, in *rpcproto.HelloReq, out *rpcproto.HelloRsp) error {
+	fmt.Println(in.Name, "say hello")
+	out.Message = "hello " + in.Name
+	return nil
 }

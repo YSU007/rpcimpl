@@ -3,7 +3,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -34,12 +33,14 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	for i := 0; i < 10; i++ {
-		tName := name + fmt.Sprint(i)
-		r, err := c.HelloGameX(ctx, &rpcproto.HelloReq{Name: tName})
-		if err != nil {
-			log.Fatalf("could not greet: %v", err)
-		}
-		log.Printf("Greeting: %s", r.GetMessage())
+	r1, err := c.HelloGameX(ctx, &rpcproto.HelloReq{Name: name})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
 	}
+	log.Printf("Greeting: %s", r1.GetMessage())
+	r2, err := c.ByeGameX(ctx, &rpcproto.ByeReq{Name: name})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+	log.Printf("Greeting: %s", r2.GetMessage())
 }

@@ -20,16 +20,27 @@ option go_package = "../rpcproto";
 
 // The service definition.
 service GameX {
-    // Sends a greeting
-    rpc HelloGameX(HelloReq) returns (HelloRsp) {}
+  // Sends a greeting
+  rpc HelloGameX(HelloReq) returns (HelloRsp) {}
+  rpc ByeGameX(ByeReq) returns (ByeRsp) {}
 }
 
 // The request message containing the user's name.
 message HelloReq {
-    string name = 1;
+  string name = 1;
 }
 
 // The response message containing the greetings
 message HelloRsp {
-    string message = 1;
+  string message = 1;
+}
+
+// The request message containing the user's name.
+message ByeReq {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message ByeRsp {
+  string message = 1;
 }
