@@ -3,15 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/emicklei/proto"
 )
 
 var (
-	gopath     = ""
-	proto_path = "/src/rpcimpl/rpcproto/msg.proto"
-	out_path   = "/src/rpcimpl/rpcproto/"
+	gopath           = ""
+	proto_path       = "/src/rpcimpl/rpcproto/msg.proto"
+	out_path         = "/src/rpcimpl/rpcproto/"
+	regFile          = "reghandler.go"
+	handler_file     = "handler"
+	handler_reg_file = "server"
 )
 
 func main() {
@@ -35,8 +39,10 @@ func main() {
 }
 
 func handleService(s *proto.Service) {
+	service_out_path := path.Join(out_path, strings.ToLower(s.Name))
 	const all = -1
 	regStr := HANDLE_REG_HEAD_TMPL
+	regStr = strings.Replace(regStr, SERVICE_NAME, strings.ToLower(s.Name), all)
 	for _, e := range s.Elements {
 		rpc, ok := e.(*proto.RPC)
 		if !ok {
@@ -53,19 +59,25 @@ func handleService(s *proto.Service) {
 		handleStr = strings.Replace(handleStr, HANDLE_REQ_NAME, rpc.RequestType, all)
 		handleStr = strings.Replace(handleStr, HANDLE_RSP_NAME, rpc.ReturnsType, all)
 		handleFile := strings.ToLower(rpc.Name) + "handler.go"
-		f, _ := os.Create(out_path + handleFile)
+		dirPath := path.Join(service_out_path, handler_file)
+		os.MkdirAll(dirPath, os.ModePerm)
+		filePath := path.Join(dirPath, handleFile)
+		f, _ := os.Create(filePath)
 		f.Write([]byte(handleStr))
 		f.Close()
-		fmt.Println("RPC Service", s.Name, handleFile, "gen")
+		fmt.Println("RPC Service", s.Name, "gen", filePath)
 	}
-	regFile := "reghandler.go"
-	f, _ := os.Create(out_path + regFile)
+	dirPath := path.Join(service_out_path, handler_reg_file)
+	os.MkdirAll(dirPath, os.ModePerm)
+	filePath := path.Join(dirPath, regFile)
+	f, _ := os.Create(filePath)
 	f.Write([]byte(regStr))
 	f.Close()
-	fmt.Println("RPC Service", s.Name, regFile, "gen")
+	fmt.Println("RPC Service", s.Name, "gen", filePath)
 }
 
 const (
+	SERVICE_NAME    = `{SERVICE_NAME}`
 	HANDLE_NAME     = `{HANDLE_NAME}`
 	HANDLE_REQ_NAME = `{HANDLE_REQ_NAME}`
 	HANDLE_RSP_NAME = `{HANDLE_RSP_NAME}`
@@ -86,7 +98,7 @@ import (
 	"context"
 
 	"rpcimpl/rpcserver/rpcproto"
-	"rpcimpl/rpcserver/rpcserver/handler"
+	"rpcimpl/rpcserver/rpcserver/{SERVICE_NAME}/handler"
 )
 `
 	HANDLE_REG_TMPL = `

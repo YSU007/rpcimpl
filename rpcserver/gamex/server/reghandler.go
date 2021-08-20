@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"rpcimpl/rpcserver/rpcproto"
-	"rpcimpl/rpcserver/rpcserver/handler"
+	"rpcimpl/rpcserver/rpcserver/gamex/handler"
 )
 
 func (s *server) HelloGameX(ctx context.Context, in *rpcproto.HelloReq) (*rpcproto.HelloRsp, error) {

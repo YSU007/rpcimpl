@@ -1,6 +1,6 @@
 package main
 
-import "rpcimpl/rpcserver/rpcserver/server"
+import "rpcimpl/rpcserver/rpcserver/gamex/server"
 
 const (
 	netType = "tcp"
