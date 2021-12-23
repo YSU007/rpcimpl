@@ -17,6 +17,6 @@ func main() {
 	defer log.Info("Stop..")
 	var ser = server.NewServer(network, address)
 	defer ser.Close()
-	msg.SetSerializer(msg.SerializerJson)
+	msg.SetSerializer(msg.SerializerPB)
 	ser.Serve()
 }

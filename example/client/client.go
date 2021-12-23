@@ -18,7 +18,7 @@ func main() {
 	log.SetDefLog(log.Logrus{})
 	log.Info("Start..")
 	defer log.Info("Stop..")
-	msg.SetSerializer(msg.SerializerJson)
+	msg.SetSerializer(msg.SerializerPB)
 	var cli = client.NewClient(network, address)
 	defer cli.Close()
 	var req = &proto.HelloReq{

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"Jottings/tiny_rpc/log"
+	"github.com/golang/protobuf/proto"
 )
 
 type SerializerType byte
@@ -21,7 +22,7 @@ func SetSerializer(t SerializerType) {
 	case SerializerJson:
 		defSerializer = JsonSerializer{}
 	case SerializerPB:
-
+		defSerializer = JsonSerializer{}
 	default:
 		log.Error("Serializer not find,type %v", t)
 	}
@@ -45,10 +46,29 @@ func Unmarshal(data []byte, v interface{}) error {
 type JsonSerializer struct {
 }
 
-func (j JsonSerializer) Marshal(v interface{}) ([]byte, error) {
+func (r JsonSerializer) Marshal(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }
 
-func (j JsonSerializer) Unmarshal(data []byte, v interface{}) error {
+func (r JsonSerializer) Unmarshal(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
+}
+
+type PBSerializer struct {
+}
+
+func (r PBSerializer) Marshal(v interface{}) ([]byte, error) {
+	m, ok := v.(proto.Message)
+	if ok {
+		return nil, fmt.Errorf("not proto msg")
+	}
+	return proto.Marshal(m)
+}
+
+func (r PBSerializer) Unmarshal(data []byte, v interface{}) error {
+	m, ok := v.(proto.Message)
+	if ok {
+		return fmt.Errorf("not proto msg")
+	}
+	return proto.Unmarshal(data, m)
 }
