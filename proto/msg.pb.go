@@ -23,6 +23,8 @@ const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 //
 //PROTO_NUM:1
 //RPC_NAME:Hello
+//REQ_NAME:HelloReq
+//RSP_NAME:HelloRsp
 type HelloReq struct {
 	HelloMsg             string   `protobuf:"bytes,1,opt,name=HelloMsg,proto3" json:"HelloMsg,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
