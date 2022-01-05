@@ -65,11 +65,19 @@ func (r *funcHandle) Serve(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMs
 	replyv := reflect.ValueOf(replyi)
 	var a, ok = ctx.(model.AccountI)
 	if ok && r.ArgType.Kind() == reflect.Ptr {
-		tempStr += fmt.Sprintf("account %v mode %v request %+v", a.ID(), req.GetMode(), argv.Elem())
+		var reqStr string
+		if s, ok := argv.Interface().(fmt.Stringer); ok {
+			reqStr = s.String()
+		}
+		tempStr += fmt.Sprintf("account %s mode %d request %+v", a.ID(), req.GetMode(), reqStr)
 	}
 	var code = r.call(ctx, argv, replyv)
 	if ok && r.ReplyType.Kind() == reflect.Ptr {
-		tempStr += fmt.Sprintf(" code %v request %+v", code, replyv.Elem())
+		var rspStr string
+		if s, ok := replyv.Interface().(fmt.Stringer); ok {
+			rspStr = s.String()
+		}
+		tempStr += fmt.Sprintf(" request %+v code %d", rspStr, code)
 		log.Debug(tempStr)
 	}
 
@@ -83,21 +91,19 @@ func (r *funcHandle) Serve(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMs
 }
 
 func (r *funcHandle) call(ctx ContextInterface, argv, replyv reflect.Value) uint32 {
-	fh := r
-
 	defer func() {
-		if r := recover(); r != nil {
+		if err := recover(); err != nil {
 			buf := make([]byte, 4096)
 			n := runtime.Stack(buf, false)
 			buf = buf[:n]
 
-			err := fmt.Errorf("[callForFunction error]: %v, function: %r, argv: %+v, stack: %r",
-				r, runtime.FuncForPC(fh.funcV.Pointer()), argv.Interface(), buf)
+			err := fmt.Errorf("[callForFunction error]: %v, function: %v, argv: %+v, stack: %v",
+				err, runtime.FuncForPC(r.funcV.Pointer()), argv.Interface(), buf)
 			log.Error("callForFunction %v", err)
 		}
 	}()
 
-	returnValues := fh.funcV.Call([]reflect.Value{reflect.ValueOf(ctx), argv, replyv})
+	returnValues := r.funcV.Call([]reflect.Value{reflect.ValueOf(ctx), argv, replyv})
 	code := returnValues[0].Interface()
 	if code != nil {
 		return code.(uint32)
