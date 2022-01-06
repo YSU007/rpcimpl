@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"strings"
 	"sync"
 
 	"Jottings/tiny_rpc/log"
@@ -59,26 +60,19 @@ func (r *funcHandle) Serve(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMs
 		return
 	}
 
-	//todo strings.Builder{}
-	var tempStr string
+	var builder strings.Builder
 	argv := reflect.ValueOf(argi)
 	replyv := reflect.ValueOf(replyi)
 	var a, ok = ctx.(model.AccountI)
 	if ok && r.ArgType.Kind() == reflect.Ptr {
-		var reqStr string
-		if s, ok := argv.Interface().(fmt.Stringer); ok {
-			reqStr = s.String()
-		}
-		tempStr += fmt.Sprintf("account %s mode %d request %+v", a.ID(), req.GetMode(), reqStr)
+		builder.WriteString(fmt.Sprintf("account %s mode %d request ", a.ID(), req.GetMode()))
+		builder.WriteString(fmt.Sprintf("%+v", argv.Interface()))
 	}
 	var code = r.call(ctx, argv, replyv)
 	if ok && r.ReplyType.Kind() == reflect.Ptr {
-		var rspStr string
-		if s, ok := replyv.Interface().(fmt.Stringer); ok {
-			rspStr = s.String()
-		}
-		tempStr += fmt.Sprintf(" request %+v code %d", rspStr, code)
-		log.Debug(tempStr)
+		builder.WriteString(" response ")
+		builder.WriteString(fmt.Sprintf("%+v code %d", replyv.Interface(), code))
+		log.Debug(builder.String())
 	}
 
 	// rsp marshal

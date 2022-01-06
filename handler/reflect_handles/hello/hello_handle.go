@@ -4,15 +4,17 @@ import (
 	"Jottings/tiny_rpc/log"
 	"Jottings/tiny_rpc/model"
 	"Jottings/tiny_rpc/module"
-	"Jottings/tiny_rpc/module/base"
 	"Jottings/tiny_rpc/proto"
 )
 
 func HelloHandle(a *model.PlayerAccount, req *proto.HelloReq, rsp *proto.HelloRsp) (code uint32) {
 	log.Info("account %v receive %v", a.AccountId, req.HelloMsg)
 
-	replay := &module.HelloReplay{}
-	base.SendWork("MA", "Hello", &module.HelloArg{Msg: "ma"}, replay)
+	replay := &proto.HelloReplay{}
+	err := module.SyncWork("MA", "Hello", &proto.HelloArg{Msg: "ma"}, replay)
+	if err != nil {
+		log.Error("%v", err)
+	}
 	rsp.ReplyMsg = replay.Msg
 	return
 }

@@ -26,7 +26,7 @@ func main() {
 	}
 	var rsp = &proto.HelloRsp{}
 
-	var ticker = time.NewTicker(time.Second)
+	var ticker = time.NewTicker(time.Second * 2)
 	for {
 		select {
 		case <-ticker.C:
@@ -34,7 +34,7 @@ func main() {
 			if err != nil {
 				return
 			}
-			log.Info("client call code %v %v rsp %v", code, err, rsp)
+			log.Info("client call code %v rsp %v", code, rsp)
 		}
 	}
 }

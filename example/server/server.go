@@ -2,7 +2,6 @@ package main
 
 import (
 	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/msg"
 	"Jottings/tiny_rpc/server"
 )
 
@@ -18,6 +17,5 @@ func main() {
 
 	var ser = server.NewServer(network, address)
 	defer ser.Close()
-	msg.SetSerializer(msg.SerializerPB)
 	ser.Serve()
 }
