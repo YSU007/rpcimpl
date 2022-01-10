@@ -2,11 +2,23 @@ package log
 
 // Interface ----------------------------------------------------------------------------------------------------
 type Interface interface {
-	Info(format string, a ...interface{})
-	Debug(format string, a ...interface{})
-	Warn(format string, a ...interface{})
-	Error(format string, a ...interface{})
-	Fatal(format string, a ...interface{})
+	Debug(v ...interface{})
+	Debugf(format string, v ...interface{})
+
+	Info(v ...interface{})
+	Infof(format string, v ...interface{})
+
+	Warn(v ...interface{})
+	Warnf(format string, v ...interface{})
+
+	Error(v ...interface{})
+	Errorf(format string, v ...interface{})
+
+	Fatal(v ...interface{})
+	Fatalf(format string, v ...interface{})
+
+	Panic(v ...interface{})
+	Panicf(format string, v ...interface{})
 }
 
 var defLog Interface
@@ -16,17 +28,17 @@ func SetDefLog(log Interface) {
 }
 
 func Info(format string, a ...interface{}) {
-	defLog.Info(format, a...)
+	defLog.Infof(format, a...)
 }
 
 func Debug(format string, a ...interface{}) {
-	defLog.Debug(format, a...)
+	defLog.Debugf(format, a...)
 }
 
 func Warn(format string, a ...interface{}) {
-	defLog.Warn(format, a...)
+	defLog.Warnf(format, a...)
 }
 
 func Error(format string, a ...interface{}) {
-	defLog.Error(format, a...)
+	defLog.Errorf(format, a...)
 }
