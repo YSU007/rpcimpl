@@ -21,24 +21,40 @@ type Interface interface {
 	Panicf(format string, v ...interface{})
 }
 
-var defLog Interface
-
-func SetDefLog(log Interface) {
-	defLog = log
-}
+var _defLog Interface
 
 func Info(format string, a ...interface{}) {
-	defLog.Infof(format, a...)
+	_defLog.Infof(format, a...)
 }
 
 func Debug(format string, a ...interface{}) {
-	defLog.Debugf(format, a...)
+	_defLog.Debugf(format, a...)
 }
 
 func Warn(format string, a ...interface{}) {
-	defLog.Warnf(format, a...)
+	_defLog.Warnf(format, a...)
 }
 
 func Error(format string, a ...interface{}) {
-	defLog.Errorf(format, a...)
+	_defLog.Errorf(format, a...)
+}
+
+// Support ----------------------------------------------------------------------------------------------------
+type Support byte
+
+const (
+	DefLog Support = iota
+	Zap
+	Logrus
+)
+
+func Init(log Support) {
+	switch log {
+	case Zap:
+		_defLog = retZap()
+	case Logrus:
+		_defLog = retLogrus()
+	default:
+
+	}
 }

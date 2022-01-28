@@ -16,7 +16,7 @@ func main() {
 }
 
 func MappingRouter() {
-	log.SetDefLog(log.FmtLog{})
+	log.Init(log.DefLog)
 
 	handler.Init(router.MappingRouterType)
 
@@ -25,7 +25,7 @@ func MappingRouter() {
 	}
 	var baseReq = &msg.RequestBase{}
 	var reqData, _ = json.Marshal(req)
-	baseReq.FillIn(handler.Hello, reqData)
+	baseReq.FillIn(proto.Hello, reqData)
 
 	var baseRsp = &msg.ResponseBase{}
 
