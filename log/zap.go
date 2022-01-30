@@ -11,8 +11,8 @@ const logSkip = 1
 
 var (
 	outDir    = "./"
-	outPath   = []string{outDir + "log.log"}
-	errorPath = []string{outDir + "err.log"}
+	outPath   = []string{"stdout", outDir + "log.log"}
+	errorPath = []string{"stderr", outDir + "err.log"}
 )
 
 func retZap() Interface {

@@ -6,5 +6,5 @@ curr_dir=$(pwd)
 server_dir="$curr_dir/server"
 client_dir="$curr_dir/client"
 
-terminal "$server_dir" &
-terminal "$client_dir" &
+ls "$server_dir"/* | grep -v '\.go$' | xargs rm -vfr
+ls "$client_dir"/* | grep -v '\.go$' | xargs rm -vfr
