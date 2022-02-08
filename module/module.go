@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"runtime"
 
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/util"
+	"tiny_rpc/log"
+	"tiny_rpc/util"
 )
 
 const (

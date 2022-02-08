@@ -1,9 +1,9 @@
 package mapping_handles
 
 import (
-	"Jottings/tiny_rpc/handler/mapping_handles/hello"
-	"Jottings/tiny_rpc/proto"
-	"Jottings/tiny_rpc/router"
+	"tiny_rpc/handler/mapping_handles/hello"
+	"tiny_rpc/proto"
+	"tiny_rpc/router"
 )
 
 // RegHandles ----------------------------------------------------------------------------------------------------

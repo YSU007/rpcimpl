@@ -3,7 +3,7 @@ package util
 import (
 	"fmt"
 
-	"Jottings/tiny_rpc/log"
+	"tiny_rpc/log"
 )
 
 func InfoPanic(format string, v ...interface{}) {

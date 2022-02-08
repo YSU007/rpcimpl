@@ -1,7 +1,7 @@
 package router
 
 import (
-	"Jottings/tiny_rpc/msg"
+	"tiny_rpc/msg"
 )
 
 type Type uint8

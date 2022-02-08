@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"io"
 
-	"Jottings/tiny_rpc/log"
+	"tiny_rpc/log"
 )
 
 type Head struct {

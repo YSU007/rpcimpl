@@ -1,6 +1,6 @@
 package router
 
-import "Jottings/tiny_rpc/msg"
+import "tiny_rpc/msg"
 
 // MappingRouter ----------------------------------------------------------------------------------------------------
 type MappingRouter map[uint32]HandleInterface

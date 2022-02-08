@@ -1,11 +1,11 @@
 package hello
 
 import (
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/model"
-	"Jottings/tiny_rpc/msg"
-	"Jottings/tiny_rpc/proto"
-	"Jottings/tiny_rpc/router"
+	"tiny_rpc/log"
+	"tiny_rpc/model"
+	"tiny_rpc/msg"
+	"tiny_rpc/proto"
+	"tiny_rpc/router"
 )
 
 type HelloProto struct {

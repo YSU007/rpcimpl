@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/model"
-	"Jottings/tiny_rpc/msg"
+	"tiny_rpc/log"
+	"tiny_rpc/model"
+	"tiny_rpc/msg"
 )
 
 // funcHandle ----------------------------------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 package server
 
 import (
-	"Jottings/tiny_rpc/module"
-	"Jottings/tiny_rpc/module/a"
-	"Jottings/tiny_rpc/module/b"
+	"tiny_rpc/module"
+	"tiny_rpc/module/a"
+	"tiny_rpc/module/b"
 )
 
 var q = module.Que{

@@ -1,12 +1,12 @@
 package server
 
 import (
-	"Jottings/tiny_rpc/handler"
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/module"
-	"Jottings/tiny_rpc/msg"
-	"Jottings/tiny_rpc/net"
-	"Jottings/tiny_rpc/router"
+	"tiny_rpc/handler"
+	"tiny_rpc/log"
+	"tiny_rpc/module"
+	"tiny_rpc/msg"
+	"tiny_rpc/net"
+	"tiny_rpc/router"
 )
 
 type Server struct {

@@ -7,8 +7,8 @@ import (
 	"net"
 	"time"
 
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/msg"
+	"tiny_rpc/log"
+	"tiny_rpc/msg"
 )
 
 type Client struct {

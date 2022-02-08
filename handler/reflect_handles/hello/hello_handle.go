@@ -1,10 +1,10 @@
 package hello
 
 import (
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/model"
-	"Jottings/tiny_rpc/module"
-	"Jottings/tiny_rpc/proto"
+	"tiny_rpc/log"
+	"tiny_rpc/model"
+	"tiny_rpc/module"
+	"tiny_rpc/proto"
 )
 
 func HelloHandle(a *model.PlayerAccount, req *proto.HelloReq, rsp *proto.HelloRsp) (code uint32) {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/server"
+	"tiny_rpc/log"
+	"tiny_rpc/server"
 )
 
 const (

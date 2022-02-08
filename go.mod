@@ -1,4 +1,4 @@
-module Jottings/tiny_rpc
+module tiny_rpc
 
 go 1.17
 

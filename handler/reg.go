@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"Jottings/tiny_rpc/handler/mapping_handles"
-	"Jottings/tiny_rpc/handler/reflect_handles"
-	"Jottings/tiny_rpc/router"
+	"tiny_rpc/handler/mapping_handles"
+	"tiny_rpc/handler/reflect_handles"
+	"tiny_rpc/router"
 )
 
 func Init(t router.Type) {

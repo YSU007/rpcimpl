@@ -4,8 +4,8 @@ import (
 	"net"
 	"sync/atomic"
 
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/util"
+	"tiny_rpc/log"
+	"tiny_rpc/util"
 )
 
 type SessionMgr struct {

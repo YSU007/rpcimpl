@@ -5,11 +5,11 @@ import (
 	"net"
 	"unsafe"
 
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/model"
-	"Jottings/tiny_rpc/msg"
-	"Jottings/tiny_rpc/router"
-	"Jottings/tiny_rpc/util"
+	"tiny_rpc/log"
+	"tiny_rpc/model"
+	"tiny_rpc/msg"
+	"tiny_rpc/router"
+	"tiny_rpc/util"
 )
 
 type SessionID uint32

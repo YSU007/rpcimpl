@@ -1,9 +1,9 @@
 package a
 
 import (
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/module"
-	"Jottings/tiny_rpc/proto"
+	"tiny_rpc/log"
+	"tiny_rpc/module"
+	"tiny_rpc/proto"
 )
 
 type MA struct {

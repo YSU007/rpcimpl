@@ -3,10 +3,10 @@ package main
 import (
 	"time"
 
-	"Jottings/tiny_rpc/client"
-	"Jottings/tiny_rpc/log"
-	"Jottings/tiny_rpc/msg"
-	"Jottings/tiny_rpc/proto"
+	"tiny_rpc/client"
+	"tiny_rpc/log"
+	"tiny_rpc/msg"
+	"tiny_rpc/proto"
 )
 
 const (

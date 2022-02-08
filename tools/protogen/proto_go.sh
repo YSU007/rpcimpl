@@ -3,7 +3,7 @@
 CURR_DIR=$(pwd)
 IN_PATH=$CURR_DIR
 OUT_PATH=$CURR_DIR/gen
-PROTO_PATH=$CURR_DIR/../proto
+PROTO_PATH=$CURR_DIR/../../proto
 
 gen() {
     if [ -d "$OUT_PATH"  ];then

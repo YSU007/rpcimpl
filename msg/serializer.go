@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"Jottings/tiny_rpc/log"
+	"tiny_rpc/log"
 	"github.com/golang/protobuf/proto"
 )
 
