@@ -190,10 +190,7 @@ func (r *Base) Start() {
 			case w := <-r.workChan:
 				func(w *Work) {
 					defer util.InfoPanic("module %v panic, work %s param %+v", r.name, w.Method, w.Arg)
-
-					if err := r.dealWork(w); err != nil {
-						log.Error("module %v deal work err %v", r.name, err)
-					}
+					r.dealWork(w)
 				}(w)
 			case <-r.closeChan:
 				return
@@ -253,21 +250,21 @@ func (r *Base) register() error {
 	return nil
 }
 
-func (r *Base) dealWork(w *Work) error {
+func (r *Base) dealWork(w *Work) {
 	mtype := r.method[w.Method]
 	if mtype == nil {
-		var err = fmt.Errorf("%s not find", w.Method)
+		var err = fmt.Errorf("module %s method %s not find", r.name, w.Method)
 		if w.RetChan != nil {
 			w.Err = err
 			w.RetChan <- struct{}{}
 		}
-		return err
+		return
 	}
 
 	if w.Reply == nil || w.RetChan == nil {
 		log.Debug("module %s receive notify %+v", r.name, w.Arg)
 		r.callNotify(mtype, reflect.ValueOf(w.Arg))
-		return nil
+		return
 	}
 
 	var builder strings.Builder
@@ -281,7 +278,7 @@ func (r *Base) dealWork(w *Work) error {
 		}
 		w.RetChan <- struct{}{}
 	}
-	return nil
+	return
 }
 
 func (r *Base) callSync(mtype *methodType, argv, replyv reflect.Value) (err error) {
