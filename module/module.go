@@ -20,8 +20,8 @@ func SyncWork(mo, me string, arg, reply interface{}) error {
 	return MgrIns().work(mo, me, arg, reply)
 }
 
-func NotifyWork(mo, me string, arg interface{}) {
-	_ = MgrIns().work(mo, me, arg, nil)
+func NotifyWork(mo, me string, arg interface{}) error {
+	return MgrIns().work(mo, me, arg, nil)
 }
 
 // Que ----------------------------------------------------------------------------------------------------

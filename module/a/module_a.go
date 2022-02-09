@@ -20,7 +20,10 @@ func (r *MA) Save() error {
 func (r *MA) Hello(arg *proto.HelloArg, replay *proto.HelloReplay) error {
 	log.Info("hello %v", arg.Msg)
 	replay.Msg = "hello~"
-	module.NotifyWork(module.MB, module.MB_Hello, &proto.HelloArg{Msg: "mb"})
+	err := module.NotifyWork(module.MB, module.MB_Hello, &proto.HelloArg{Msg: "mb"})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
