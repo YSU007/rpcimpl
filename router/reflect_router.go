@@ -120,11 +120,13 @@ func (r *ReflectRouter) RegHandle(mode uint32, handleInterface HandleInterface) 
 	r.function[mode] = handleInterface
 }
 
-func (r *ReflectRouter) HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg) {
+func (r *ReflectRouter) HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg) error {
 	f := r.function[req.GetMode()]
-	if f != nil {
-		f.Serve(ctx, req, rsp)
+	if f == nil {
+		return fmt.Errorf("mode %d not find", req.GetMode())
 	}
+	f.Serve(ctx, req, rsp)
+	return nil
 }
 
 // typePools ----------------------------------------------------------------------------------------------------

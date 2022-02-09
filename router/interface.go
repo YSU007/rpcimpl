@@ -22,7 +22,7 @@ type HandleInterface interface {
 
 type Interface interface {
 	RegHandle(mode uint32, handleInterface HandleInterface)
-	HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg)
+	HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg) error
 }
 
 // Reset ----------------------------------------------------------------------------------------------------
@@ -41,6 +41,6 @@ func RegHandle(mode uint32, handleInterface HandleInterface) {
 	Instance.RegHandle(mode, handleInterface)
 }
 
-func HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg) {
-	Instance.HandleServe(ctx, req, rsp)
+func HandleServe(ctx ContextInterface, req msg.ModeMsg, rsp msg.CodeMsg) error {
+	return Instance.HandleServe(ctx, req, rsp)
 }

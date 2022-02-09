@@ -11,7 +11,7 @@ func HelloHandle(a *model.PlayerAccount, req *proto.HelloReq, rsp *proto.HelloRs
 	log.Info("account %v receive %v", a.AccountId, req.HelloMsg)
 
 	replay := &proto.HelloReplay{}
-	err := module.SyncWork("MA", "Hello", &proto.HelloArg{Msg: "ma"}, replay)
+	err := module.SyncWork(module.MA, module.MA_Hello, &proto.HelloArg{Msg: "ma"}, replay)
 	if err != nil {
 		log.Error("%v", err)
 	}

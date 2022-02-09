@@ -7,6 +7,6 @@ import (
 )
 
 var q = module.Que{
-	{M: &a.MA{}, Size: module.ChanSizeDef},
-	{M: &b.MB{}, Size: module.ChanSizeDef},
+	{M: &a.MA{}, Size: module.ChanSizeDef, MName: module.MA},
+	{M: &b.MB{}, Size: module.ChanSizeDef, MName: module.MB},
 }

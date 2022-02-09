@@ -17,6 +17,7 @@ var (
 
 func retZap() Interface {
 	config := zap.NewProductionConfig()
+	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 	config.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
 	config.Encoding = "json"
 	config.OutputPaths = outPath

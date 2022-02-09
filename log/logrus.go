@@ -16,7 +16,6 @@ func retLogrus() Interface {
 			return frame.Function, fileName
 		},
 	})
-	log.SetReportCaller(true)
 	log.SetLevel(log.TraceLevel)
 
 	return log.StandardLogger()

@@ -11,7 +11,7 @@ const (
 )
 
 func main() {
-	log.Init(log.Zap)
+	log.Init(log.Logrus)
 	log.Info("Start..")
 	defer log.Info("Stop..")
 

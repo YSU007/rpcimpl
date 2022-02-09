@@ -21,7 +21,7 @@ func NewServer(network, address string) *Server {
 
 func (s *Server) Serve() {
 	msg.SetSerializer(msg.SerializerPB)
-	handler.Init(router.ReflectRouterType)
+	handler.Init(router.MappingRouterType)
 
 	if err := module.MgrIns().Reg(q); err != nil {
 		log.Error("reg module %v", err)

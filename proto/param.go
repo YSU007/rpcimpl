@@ -7,7 +7,3 @@ type HelloArg struct {
 type HelloReplay struct {
 	Msg string
 }
-
-type HelloBArg struct {
-	Msg string
-}

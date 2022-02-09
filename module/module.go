@@ -4,13 +4,10 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"strings"
 
 	"tiny_rpc/log"
 	"tiny_rpc/util"
-)
-
-const (
-	ChanSizeDef = 1024
 )
 
 var m = newMgr()
@@ -31,8 +28,9 @@ func NotifyWork(mo, me string, arg interface{}) {
 type (
 	Que  []Node
 	Node struct {
-		M    M
-		Size int
+		M     M
+		Size  int
+		MName string
 	}
 )
 
@@ -54,16 +52,23 @@ func newMgr() *Mgr {
 func (r *Mgr) Reg(q Que) error {
 	for _, n := range q {
 		t := reflect.TypeOf(n.M)
-		name := t.Elem().Name()
 		if t.Kind() != reflect.Ptr {
-			name = t.Name()
+			name := t.Name()
+			if n.MName != "" {
+				name = n.MName
+			}
 			return fmt.Errorf("reg module %s fail, module not ptr", name)
 		}
+
+		name := t.Elem().Name()
+		if n.MName != "" {
+			name = n.MName
+		}
 		if r.moduleMap[name] != nil {
-			return nil
+			return fmt.Errorf("reg module %s fail, module duplicate", name)
 		}
 
-		module := NewModule(n.M, n.Size, r.wg)
+		module := NewModule(n.M, name, n.Size, r.wg)
 		r.moduleMap[name] = module
 		r.moduleList = append(r.moduleList, name)
 		if err := module.register(); err != nil {
@@ -163,9 +168,9 @@ type methodType struct {
 	ReplyType reflect.Type
 }
 
-func NewModule(m M, chanSize int, wg *util.WGWrapper) *Base {
+func NewModule(m M, name string, chanSize int, wg *util.WGWrapper) *Base {
 	return &Base{
-		name:      reflect.TypeOf(m).Elem().Name(),
+		name:      name,
 		workChan:  make(chan *Work, chanSize),
 		closeChan: make(chan interface{}),
 		wg:        wg,
@@ -251,15 +256,25 @@ func (r *Base) register() error {
 func (r *Base) dealWork(w *Work) error {
 	mtype := r.method[w.Method]
 	if mtype == nil {
-		return fmt.Errorf("%s not find", w.Method)
+		var err = fmt.Errorf("%s not find", w.Method)
+		if w.RetChan != nil {
+			w.Err = err
+			w.RetChan <- struct{}{}
+		}
+		return err
 	}
 
 	if w.Reply == nil || w.RetChan == nil {
+		log.Debug("module %s receive notify %+v", r.name, w.Arg)
 		r.callNotify(mtype, reflect.ValueOf(w.Arg))
 		return nil
 	}
 
+	var builder strings.Builder
+	builder.WriteString(fmt.Sprintf("module %s receive sync call arg %+v ", r.name, w.Arg))
 	err := r.callSync(mtype, reflect.ValueOf(w.Arg), reflect.ValueOf(w.Reply))
+	builder.WriteString(fmt.Sprintf("reply %+v err %v", w.Reply, err))
+	log.Debug(builder.String())
 	if w.RetChan != nil {
 		if err != nil {
 			w.Err = err
