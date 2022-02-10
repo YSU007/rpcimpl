@@ -2,6 +2,7 @@ package net
 
 import (
 	"net"
+	"sync"
 	"sync/atomic"
 
 	"tiny_rpc/log"
@@ -12,6 +13,7 @@ type SessionMgr struct {
 	net.Listener
 	wg             *util.WGWrapper
 	sessionCounter SessionID
+	l              sync.RWMutex
 	sessions       map[SessionID]*Session
 }
 
@@ -28,9 +30,9 @@ func NewSessionMgr(network, address string) *SessionMgr {
 	}
 }
 
-func (s *SessionMgr) Start() {
+func (r *SessionMgr) Start() {
 	for {
-		conn, err := s.Accept()
+		conn, err := r.Accept()
 		if err != nil {
 			if ne, ok := err.(net.Error); ok && ne.Temporary() {
 				log.Error("server accept err %v", err)
@@ -39,22 +41,35 @@ func (s *SessionMgr) Start() {
 			log.Info("server accept err %v", err)
 			return
 		}
-		atomic.AddUint32((*uint32)(&(s.sessionCounter)), 1)
-		var session = newSession(conn, s.sessionCounter, s.wg)
-		s.sessions[s.sessionCounter] = session
-		s.wg.Wrap(session.start)
+		atomic.AddUint32((*uint32)(&(r.sessionCounter)), 1)
+		var session = newSession(conn, r.sessionCounter, r.wg)
+		r.add(session)
+		r.wg.Wrap(session.start)
 	}
 }
 
-func (s *SessionMgr) Stop() {
-	err := s.Close()
+func (r *SessionMgr) Stop() {
+	err := r.Close()
 	if err != nil {
 		log.Error("server stop err %v", err)
 	}
-	var counter = len(s.sessions)
-	for _, s := range s.sessions {
-		s.stop()
-	}
-	s.wg.Wait()
-	log.Info("server stop,accept count %d,stop session %d.", s.sessionCounter, counter)
+
+	var counter = func() int {
+		r.l.RLock()
+		defer r.l.RUnlock()
+
+		var counter = len(r.sessions)
+		for _, s := range r.sessions {
+			s.stop()
+		}
+		return counter
+	}()
+	r.wg.Wait()
+	log.Info("server stop,accept count %d,stop session %d.", r.sessionCounter, counter)
+}
+
+func (r *SessionMgr) add(s *Session) {
+	r.l.Lock()
+	defer r.l.Unlock()
+	r.sessions[r.sessionCounter] = s
 }
